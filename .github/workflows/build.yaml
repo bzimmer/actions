@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   prepare:
+    runs-on: ubuntu-latest
     steps:
       - name: install go
         uses: actions/setup-go@v3
@@ -31,6 +32,7 @@ jobs:
         run: task dist
 
   formatting:
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: go format
@@ -39,6 +41,7 @@ jobs:
         run: go vet ./...
 
   dependencies:
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: go tidy
@@ -49,12 +52,14 @@ jobs:
         run: go mod verify
 
   generate:
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: go generate
         run: go generate ./... && git diff --exit-code
 
   test:
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: go test
@@ -70,6 +75,7 @@ jobs:
         if: false
 
   lint:
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: run typos
