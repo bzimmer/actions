@@ -34,7 +34,9 @@ jobs:
 
       - name: install fd
         run: |
+          mkdir -pr ${HOME}/.local/bin
           sudo apt install fd-find
+          echo $(which fdfind)
           ln -s $(which fdfind) ${HOME}/.local/bin/fd
           echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
