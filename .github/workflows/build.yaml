@@ -32,8 +32,11 @@ jobs:
       - name: install task
         uses: arduino/setup-task@v1
 
-      - name: make dist
-        run: task dist
+      - name: install fd
+        run: |
+          sudo apt install fd-find
+          ln -s $(which fdfind) ${HOME}/.local/bin/fd
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
@@ -77,3 +80,6 @@ jobs:
           version: latest
           # Optional: golangci-lint command line arguments.
           args: -v
+
+      - name: go build
+        run: task build
