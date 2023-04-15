@@ -20,17 +20,20 @@ jobs:
       fail-fast: true
 
     steps:
-      - name: Install Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 'stable'
-          check-latest: true
-
-      - name: Checkout
+      - name: checkout code
         uses: actions/checkout@v3
 
-      - name: Install govulncheck
+      - name: install go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+          check-latest: true
+
+      - name: go version
+        run: go version
+
+      - name: install govulncheck
         run: go install golang.org/x/vuln/cmd/govulncheck@latest
 
-      - name: Run govulncheck
+      - name: run govulncheck
         run: govulncheck -test ./...

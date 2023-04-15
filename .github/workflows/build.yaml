@@ -38,23 +38,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.cache-name }}-
-            ${{ runner.os }}-go-
-            ${{ runner.os }}-
-
       - name: checkout code
         uses: actions/checkout@v3
 
       - name: install go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: "1.20.x"
+          go-version-file: go.mod
           check-latest: true
 
       - name: install task
