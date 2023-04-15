@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/bzimmer/actions"
 	"github.com/urfave/cli/v2"
+
+	"github.com/bzimmer/actions"
 )
 
 func main() {
