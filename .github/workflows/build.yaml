@@ -1,7 +1,20 @@
 name: build
 
+
 on:
-  push
+  push:
+  workflow_call:
+    inputs:
+      skipBuild:
+        description: 'Skip build, useful for libraries'
+        default: false
+        required: false
+        type: boolean
+      skipCoverage:
+        description: 'Skip coverage upload'
+        default: false
+        required: false
+        type: boolean
 
 permissions:
   contents: read
@@ -40,9 +53,12 @@ jobs:
       - name: install task
         uses: arduino/setup-task@v1
 
-      - name: install fd
+      - name: install dependencies
         run: |
-          sudo apt install fd-find
+          sudo add-apt-repository ppa:mithrandie/csvq
+          sudo apt-get update
+          sudo apt-get install zsh fd-find csvq
+
           mkdir -p ${HOME}/.local/bin
           ln -s $(which fdfind) ${HOME}/.local/bin/fd
           echo "${HOME}/.local/bin" >> $GITHUB_PATH
@@ -67,6 +83,7 @@ jobs:
 
       - name: go build
         run: task build
+        if: ${{ !inputs.skipbuild }}
 
       - name: go test
         run: task test
@@ -80,4 +97,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./dist/coverage.txt
           verbose: true
-        if: false
+        if: ${{ !inputs.skipCoverage }}
