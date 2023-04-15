@@ -32,11 +32,10 @@ jobs:
       - name: install task
         uses: arduino/setup-task@v1
 
-      - name: prepare
+      - name: install fd
         run: |
-          mkdir -p ${HOME}/.local/bin
           sudo apt install fd-find
-          echo $(which fdfind)
+          mkdir -p ${HOME}/.local/bin
           ln -s $(which fdfind) ${HOME}/.local/bin/fd
           echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
