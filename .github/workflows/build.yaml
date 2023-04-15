@@ -32,7 +32,7 @@ jobs:
       - name: install task
         uses: arduino/setup-task@v1
 
-      - name: install fd
+      - name: prepare
         run: |
           mkdir -p ${HOME}/.local/bin
           sudo apt install fd-find
@@ -59,7 +59,8 @@ jobs:
         run: go generate ./... && git diff --exit-code
 
       - name: go test
-        run: go test -v -count=1 -race -shuffle=on -coverprofile=dist/coverage.txt ./...
+        # run: go test -v -count=1 -race -shuffle=on -coverprofile=dist/coverage.txt ./...
+        run: task test
 
       - name: go benchmark
         run: go test -v -shuffle=on -run=- -bench=. -benchtime=1x ./...
