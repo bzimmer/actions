@@ -39,7 +39,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    uses: bzimmer/actions/.github/workflows/fd.yaml@main
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -52,6 +51,15 @@ jobs:
 
       - name: install task
         uses: arduino/setup-task@v1
+
+      - name: install fd
+        run: |
+          sudo apt-get update
+          sudo apt-get install fd-find
+
+          mkdir -p ${HOME}/.local/bin
+          ln -s $(which fdfind) ${HOME}/.local/bin/fd
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
