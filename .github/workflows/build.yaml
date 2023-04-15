@@ -34,7 +34,7 @@ jobs:
 
       - name: install fd
         run: |
-          mkdir -pr ${HOME}/.local/bin
+          mkdir -p ${HOME}/.local/bin
           sudo apt install fd-find
           echo $(which fdfind)
           ln -s $(which fdfind) ${HOME}/.local/bin/fd
