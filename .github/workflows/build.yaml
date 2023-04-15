@@ -7,6 +7,34 @@ permissions:
   contents: read
 
 jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ env.cache-name }}-
+            ${{ runner.os }}-go-
+            ${{ runner.os }}-
+
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: run typos
+        uses: crate-ci/typos@master
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
+          version: latest
+          # Optional: golangci-lint command line arguments.
+          args: -v
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -57,8 +85,10 @@ jobs:
       - name: go generate
         run: go generate ./... && git diff --exit-code
 
+      - name: go build
+        run: task build
+
       - name: go test
-        # run: go test -v -count=1 -race -shuffle=on -coverprofile=dist/coverage.txt ./...
         run: task test
 
       - name: go benchmark
@@ -71,17 +101,3 @@ jobs:
           files: ./dist/coverage.txt
           verbose: true
         if: false
-
-      - name: run typos
-        uses: crate-ci/typos@master
-
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
-          version: latest
-          # Optional: golangci-lint command line arguments.
-          args: -v
-
-      - name: go build
-        run: task build
