@@ -52,14 +52,8 @@ jobs:
       - name: install task
         uses: arduino/setup-task@v1
 
-      - name: install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install fd-find
-
-          mkdir -p ${HOME}/.local/bin
-          ln -s $(which fdfind) ${HOME}/.local/bin/fd
-          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+      - name: install fd
+        uses: bzimmer/actions/.github/workflows/fd.yaml@main
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
