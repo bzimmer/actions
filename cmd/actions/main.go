@@ -22,7 +22,7 @@ func main() {
 		},
 	}
 	if err := app.RunContext(context.Background(), os.Args); err != nil {
-		fmt.Printf("%v\n", err)
+		fmt.Fprintf(app.Writer, "%v\n", err)
 		os.Exit(1)
 	}
 	os.Exit(0)
