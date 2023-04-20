@@ -1,15 +1,11 @@
-# https://taskfile.dev
-
 version: '3'
 
 vars:
+
   DIST:
     "{{.ROOT_DIR}}/dist"
 
 tasks:
-  default:
-    cmds:
-      - task -l
 
   dist:
     desc: Create dist directory
@@ -60,14 +56,18 @@ tasks:
     desc: Build all binaries
     deps: [dist]
     vars:
+      cmds:
+        "{{ .ROOT_DIR }}/cmd"
       binaries:
-        sh: fd -t d --max-depth 1 . {{.ROOT_DIR}}/cmd -x echo {/}
+        sh: if [[ -d {{ .cmds }} ]]; then fd -t d --max-depth 1 . {{ .cmds }} -x echo {/}; fi
     cmds:
       - |
 
-        {{ range ( .binaries | trim | splitLines ) -}}
-        go build -o {{$.DIST}}/{{.}} cmd/{{.}}/*.go
-        {{ end -}}
+        {{ range $i, $binary := ( .binaries | trim | splitLines ) -}}
+          {{ if $binary }}
+        go build -o {{ $.DIST }}/{{ $binary }} {{ $.cmds }}/{{ $binary }}/*.go
+          {{- end -}}
+        {{- end -}}
 
   generate:
     desc: Run go generate
