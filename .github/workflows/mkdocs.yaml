@@ -28,6 +28,7 @@ jobs:
 
           if [[ -e requirements.txt ]];
           then
+            pip install --upgrade pip
             pip install -r requirements.txt
             mkdocs gh-deploy --force
           fi
