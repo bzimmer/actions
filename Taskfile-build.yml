@@ -1,11 +1,15 @@
+# https://taskfile.dev
+
 version: '3'
 
 vars:
-
   DIST:
     "{{.ROOT_DIR}}/dist"
 
 tasks:
+  default:
+    cmds:
+      - task -l
 
   dist:
     desc: Create dist directory

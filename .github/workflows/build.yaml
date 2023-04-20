@@ -57,9 +57,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install fd-find jq
 
-          mkdir -p ${HOME}/.local/bin
-          ln -s $(which fdfind) ${HOME}/.local/bin/fd
-          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+          mkdir -p "${HOME}/.local/bin"
+          ln -s "$(which fdfind)" "${HOME}/.local/bin/fd"
+          echo "${HOME}/.local/bin" >> "$GITHUB_PATH"
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
