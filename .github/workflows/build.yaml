@@ -29,12 +29,38 @@ jobs:
       - name: run typos
         uses: crate-ci/typos@master
 
+      - name: install go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+          check-latest: true
+
+      - name: go format
+        run: gofmt -s -w . && git diff --exit-code
+
+      - name: go tidy
+        run: go mod tidy && git diff --exit-code
+
+      - name: goimports
+        run: |
+
+          go install golang.org/x/tools/cmd/goimports@latest
+          goimports -w -local "$(go mod edit -json | jq -r .Module.Path)" .
+          git diff --exit-code
+
+      - name: go mod
+        run: go mod download
+
+      - name: go mod verify
+        run: go mod verify
+
+      - name: go generate
+        run: go generate ./... && git diff --exit-code
+
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
           version: latest
-          # Optional: golangci-lint command line arguments.
           args: -v
 
   build:
@@ -60,27 +86,6 @@ jobs:
           mkdir -p "${HOME}/.local/bin"
           ln -s "$(which fdfind)" "${HOME}/.local/bin/fd"
           echo "${HOME}/.local/bin" >> "$GITHUB_PATH"
-
-      - name: go format
-        run: gofmt -s -w . && git diff --exit-code
-
-      - name: go tidy
-        run: go mod tidy && git diff --exit-code
-
-      - name: goimports
-        run: |
-          go install golang.org/x/tools/cmd/goimports@latest
-          goimports -w -local "$(go mod edit -json | jq -r .Module.Path)" .
-          git diff --exit-code
-
-      - name: go mod
-        run: go mod download
-
-      - name: go mod verify
-        run: go mod verify
-
-      - name: go generate
-        run: go generate ./... && git diff --exit-code
 
       - name: go build
         run: task build
