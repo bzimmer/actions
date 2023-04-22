@@ -74,6 +74,7 @@ jobs:
         with:
           go-version-file: go.mod
           check-latest: true
+          cache: false
 
       - name: install task
         uses: arduino/setup-task@v1
