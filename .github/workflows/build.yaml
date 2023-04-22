@@ -34,6 +34,7 @@ jobs:
         with:
           go-version-file: go.mod
           check-latest: true
+          cache: false
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
