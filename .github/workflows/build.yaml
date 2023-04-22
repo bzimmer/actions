@@ -23,15 +23,15 @@ jobs:
   golangci:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
       - name: install go
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
           check-latest: true
           cache: false
-
-      - name: checkout code
-        uses: actions/checkout@v3
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
@@ -42,15 +42,15 @@ jobs:
   conventions:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
       - name: install go
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
           check-latest: true
           cache: false
-
-      - name: checkout code
-        uses: actions/checkout@v3
 
       - name: run typos
         uses: crate-ci/typos@master
@@ -80,6 +80,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
       - name: install go
         uses: actions/setup-go@v4
         with:
@@ -98,9 +101,6 @@ jobs:
           mkdir -p "${HOME}/.local/bin"
           ln -s "$(which fdfind)" "${HOME}/.local/bin/fd"
           echo "${HOME}/.local/bin" >> "$GITHUB_PATH"
-
-      - name: checkout code
-        uses: actions/checkout@v3
 
       - name: go build
         run: task build
