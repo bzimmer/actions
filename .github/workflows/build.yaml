@@ -20,21 +20,40 @@ permissions:
 
 jobs:
 
-  lint:
+  golangci:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-
-      - name: run typos
-        uses: crate-ci/typos@master
-
       - name: install go
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
           check-latest: true
           cache: false
+
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          args: -v
+
+  conventions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+          check-latest: true
+          cache: false
+
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: run typos
+        uses: crate-ci/typos@master
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
@@ -58,18 +77,9 @@ jobs:
       - name: go generate
         run: go generate ./... && git diff --exit-code
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: latest
-          args: -v
-
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-
       - name: install go
         uses: actions/setup-go@v4
         with:
@@ -88,6 +98,9 @@ jobs:
           mkdir -p "${HOME}/.local/bin"
           ln -s "$(which fdfind)" "${HOME}/.local/bin/fd"
           echo "${HOME}/.local/bin" >> "$GITHUB_PATH"
+
+      - name: checkout code
+        uses: actions/checkout@v3
 
       - name: go build
         run: task build
