@@ -64,7 +64,7 @@ jobs:
         run: |
 
           go install golang.org/x/tools/cmd/goimports@latest
-          goimports -w -local "$(go mod edit -json | jq -r .Module.Path)" .
+          goimports -w -local "$(go mod edit -json | jq -r .Module.Path)/" .
           git diff --exit-code
 
       - name: go mod
