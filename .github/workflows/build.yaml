@@ -73,6 +73,11 @@ jobs:
       - name: go mod verify
         run: go mod verify
 
+      - name: install genwith
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: bzimmer/genwith
+
       - name: go generate
         run: go generate ./... && git diff --exit-code
 
