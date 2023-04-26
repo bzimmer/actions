@@ -51,6 +51,11 @@ jobs:
           check-latest: true
           cache: false
 
+      - name: install gotools
+        run: |
+          go install golang.org/x/tools/cmd/goimports@latest
+          go install golang.org/x/tools/cmd/stringer@latest
+
       - name: run typos
         uses: crate-ci/typos@master
 
@@ -60,10 +65,8 @@ jobs:
       - name: go tidy
         run: go mod tidy && git diff --exit-code
 
-      - name: goimports
+      - name: run goimports
         run: |
-
-          go install golang.org/x/tools/cmd/goimports@latest
           goimports -w -local "$(go mod edit -json | jq -r .Module.Path)/" .
           git diff --exit-code
 
