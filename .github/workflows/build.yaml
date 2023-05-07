@@ -40,7 +40,8 @@ jobs:
           version: latest
           args: -v
 
-      - uses: dominikh/staticcheck-action@v1.2.0
+      - name: staticcheck
+        uses: dominikh/staticcheck-action@v1.2.0
         with:
           version: latest
           install-go: false
