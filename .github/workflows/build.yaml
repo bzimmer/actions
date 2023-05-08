@@ -40,13 +40,11 @@ jobs:
           version: latest
           args: -v
 
-      - name: install staticcheck
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
-        with:
-          repo: dominikh/go-tools
-
       - name: staticcheck
-        run: staticcheck
+        uses: dominikh/staticcheck-action@v1.2.0
+        with:
+          version: latest
+          install-go: false
 
   verifications:
     runs-on: ubuntu-latest
