@@ -110,7 +110,7 @@ jobs:
           cache: false
 
       - name: install task
-        uses: arduino/setup-task@v1
+        uses: arduino/setup-task@v2
 
       - name: install fd
         run: |
