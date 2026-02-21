@@ -41,7 +41,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GORELEASER_TOKEN || secrets.GITHUB_TOKEN }}
       - name: run goreleaser
         uses: goreleaser/goreleaser-action@v6
         with:
