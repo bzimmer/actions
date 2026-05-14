@@ -41,7 +41,7 @@ jobs:
           args: -v
 
       - name: staticcheck
-        uses: dominikh/staticcheck-action@v1.3.1
+        uses: dominikh/staticcheck-action@v1.4.1
         with:
           version: latest
           install-go: false
@@ -67,7 +67,7 @@ jobs:
           go install golang.org/x/tools/cmd/stringer@latest
 
       - name: run typos
-        uses: crate-ci/typos@master
+        uses: crate-ci/typos@v1.46.1
 
       - name: go format
         run: gofmt -s -w . && git diff --exit-code
@@ -87,7 +87,7 @@ jobs:
         run: go mod verify
 
       - name: install genwith
-        uses: jaxxstorm/action-install-gh-release@v1.12.0
+        uses: jaxxstorm/action-install-gh-release@v3.0.0
         with:
           repo: bzimmer/genwith
 
@@ -132,7 +132,7 @@ jobs:
         run: go test -v -shuffle=on -run=- -bench=. -benchtime=1x ./...
 
       - name: upload code coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./dist/coverage.txt
