@@ -32,10 +32,12 @@ jobs:
           path: .mkdocs-cache
       - run: |
 
-          if [[ -f pyproject.toml ]]; then
-            uv run mkdocs gh-deploy --force
-          elif [[ -f requirements.txt ]]; then
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            mkdocs gh-deploy --force
+          if [[ -f mkdocs.yml ]]; then
+            if [[ -f pyproject.toml ]]; then
+              uv run mkdocs gh-deploy --force
+            elif [[ -f requirements.txt ]]; then
+              pip install --upgrade pip
+              pip install -r requirements.txt
+              mkdocs gh-deploy --force
+            fi
           fi
